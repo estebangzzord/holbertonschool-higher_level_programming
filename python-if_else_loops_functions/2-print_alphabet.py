@@ -1,3 +1,3 @@
-#!/usr/bin/python3
-for a in "abcdefghijklmnopqrstuvwxyz":
-    print(f"{a}", end='')
+#!/usr/bin/python#
+for a in range(ord('a'), ord('z')+1):
+    print(chr(a), end='')
