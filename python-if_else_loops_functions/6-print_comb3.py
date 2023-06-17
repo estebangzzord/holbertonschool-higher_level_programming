@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-for i in range(10):
-for j in range(10):
-if(i is 8 and j is 9):
-    print("{}".format(str(i) + str(j)))
-elif(j > i):
-    print("{}".format(str(i) + str(j)) + ", ", end="")
+for num in range(0, 90):
+if num % 10 > num / 10:
+if num != 89:
+    print("{:02d}, ".format(num), end='')
+else:
+    print("{:02d}".format(num))
