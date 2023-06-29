@@ -1,7 +1,11 @@
 #!/usr/bin/python3
+"""Square Class
+
+This Class is idle at this point
+
+"""
+
 
 class Square:
-    """
-    Class Square that defines a square.
-    """
+    """ pass is a placeholder here """
     pass
