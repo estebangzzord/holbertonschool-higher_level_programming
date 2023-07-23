@@ -1,0 +1,210 @@
+#!/usr/bin/python3
+""" Module for test Square class """
+import unittest
+from models.square import Square
+from models.base import Base
+from io import StringIO
+from unittest.mock import patch
+
+
+class TestSquareMethods(unittest.TestCase):
+    """ Suite to test Square class """
+
+    def setUp(self):
+        """ Method invoked for each test """
+        Base._Base__nb_objects = 0
+
+    def test_new_square(self):
+        """ Test new square """
+        new = Square(1)
+        self.assertEqual(new.size, 1)
+        self.assertEqual(new.x, 0)
+        self.assertEqual(new.y, 0)
+        self.assertEqual(new.id, 1)
+
+    def test_new_square_2(self):
+        """ Test new square with all attrs """
+        new = Square(2, 5, 5, 4)
+        self.assertEqual(new.size, 2)
+        self.assertEqual(new.x, 5)
+        self.assertEqual(new.y, 5)
+        self.assertEqual(new.id, 4)
+
+    def test_new_squares(self):
+        """ Test new squares """
+        new = Square(1)
+        new2 = Square(1)
+        self.assertEqual(False, new is new2)
+        self.assertEqual(False, new.id == new2.id)
+
+    def test_is_Base_instance(self):
+        """ Test Square is a Base instance """
+        new = Square(1)
+        self.assertEqual(True, isinstance(new, Base))
+
+    def test_new_square_too_many_args(self):
+        """ Test new square with too many arguments """
+        with self.assertRaises(TypeError):
+            Square(1, 1, 1, 1, 1)
+
+    def test_new_square_no_args(self):
+        """ Test new square with no arguments """
+        with self.assertRaises(TypeError):
+            Square()
+
+    def test_new_square_with_one_arg(self):
+        """ Test new square with one argument """
+        with self.assertRaises(TypeError):
+            Square(1)
+
+    def test_size_private(self):
+        """ Test size attribute is private """
+        new = Square(1)
+        with self.assertRaises(AttributeError):
+            new.__size
+
+    def test_x_private(self):
+        """ Test x attribute is private """
+        new = Square(1)
+        with self.assertRaises(AttributeError):
+            new.__x
+
+    def test_y_private(self):
+        """ Test y attribute is private """
+        new = Square(1)
+        with self.assertRaises(AttributeError):
+            new.__y
+
+    def test_area_1(self):
+        """ Test area of square """
+        new = Square(3)
+        self.assertEqual(new.area(), 9)
+
+    def test_area_2(self):
+        """ Test area of square """
+        new = Square(5)
+        self.assertEqual(new.area(), 25)
+
+    def test_area_3(self):
+        """ Test area of square """
+        new = Square(7)
+        self.assertEqual(new.area(), 49)
+
+    def test_str_1(self):
+        """ Test __str__ method """
+        new = Square(4, 2, 1, 12)
+        res = "[Square] (12) 2/1 - 4"
+        with patch('sys.stdout', new=StringIO()) as str_out:
+            print(new)
+            self.assertEqual(str_out.getvalue().strip(), res)
+
+    def test_str_2(self):
+        """ Test __str__ method """
+        new = Square(5, 1)
+        res = "[Square] (1) 1/0 - 5"
+        with patch('sys.stdout', new=StringIO()) as str_out:
+            print(new)
+            self.assertEqual(str_out.getvalue().strip(), res)
+
+    def test_str_3(self):
+        """ Test __str__ method """
+        new = Square(2)
+        res = "[Square] (1) 0/0 - 2"
+        with patch('sys.stdout', new=StringIO()) as str_out:
+            print(new)
+            self.assertEqual(str_out.getvalue().strip(), res)
+
+    def test_update_args(self):
+        """ Test update method with args """
+        new = Square(1)
+        res = "[Square] (1) 10/10 - 1"
+        with patch('sys.stdout', new=StringIO()) as str_out:
+            new.update(10, 10, 10, 10)
+            print(new)
+            self.assertEqual(str_out.getvalue().strip(), res)
+
+    def test_update_kwargs(self):
+        """ Test update method with kwargs """
+        new = Square(1)
+        res = "[Square] (1) 10/10 - 1"
+        with patch('sys.stdout', new=StringIO()) as str_out:
+            new.update(x=10, y=10, size=10, id=10)
+            print(new)
+            self.assertEqual(str_out.getvalue().strip(), res)
+
+    def test_update_no_args(self):
+        """ Test update method with no args """
+        new = Square(1)
+        res = "[Square] (1) 1/1 - 1"
+        with patch('sys.stdout', new=StringIO()) as str_out:
+            new.update()
+            print(new)
+            self.assertEqual(str_out.getvalue().strip(), res)
+
+    def test_update_args_after_kwargs(self):
+        """ Test update method with args after kwargs """
+        new = Square(1)
+        res = "[Square] (1) 1/1 - 1"
+        with patch('sys.stdout', new=StringIO()) as str_out:
+            new.update(x=10, y=10)
+            new.update(1)
+            print(new)
+            self.assertEqual(str_out.getvalue().strip(), res)
+
+    def test_update_kwargs_after_args(self):
+        """ Test update method with kwargs after args """
+        new = Square(1)
+        res = "[Square] (1) 1/1 - 1"
+        with patch('sys.stdout', new=StringIO()) as str_out:
+            new.update(1)
+            new.update(x=10, y=10)
+            print(new)
+            self.assertEqual(str_out.getvalue().strip(), res)
+
+    def test_to_dict(self):
+        """ Test to_dictionary method """
+        new = Square(10, 1, 9)
+        res = {'x': 1, 'y': 9, 'size': 10, 'id': 1}
+        self.assertEqual(new.to_dictionary(), res)
+
+    def test_save_to_file_none(self):
+        """ Test save_to_file with None """
+        Square.save_to_file(None)
+        with open("Square.json", "r") as file:
+            self.assertEqual(file.read(), "[]")
+
+    def test_save_to_file_empty(self):
+        """ Test save_to_file with empty list """
+        Square.save_to_file([])
+        with open("Square.json", "r") as file:
+            self.assertEqual(file.read(), "[]")
+
+    def test_save_to_file_squares(self):
+        """ Test save_to_file with list of squares """
+        s1 = Square(1)
+        s2 = Square(2)
+        Square.save_to_file([s1, s2])
+        with open("Square.json", "r") as file:
+            self.assertIn("id", file.read())
+
+    def test_load_from_file_none(self):
+        """ Test load_from_file with None """
+        list_objs = Square.load_from_file()
+        self.assertEqual(list_objs, [])
+
+    def test_load_from_file_empty(self):
+        """ Test load_from_file with empty file """
+        open("Square.json", "w").close()
+        list_objs = Square.load_from_file()
+        self.assertEqual(list_objs, [])
+
+    def test_load_from_file_squares(self):
+        """ Test load_from_file with squares """
+        s1 = Square(1)
+        s2 = Square(2)
+        Square.save_to_file([s1, s2])
+        list_objs = Square.load_from_file()
+        self.assertEqual(len(list_objs), 2)
+
+if __name__ == '__main__':
+    unittest.main()

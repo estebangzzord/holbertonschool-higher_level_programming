@@ -1,22 +1,19 @@
 #!/usr/bin/python3
 """ Module for test Base class """
 import unittest
+from models.base import Base
+from models.rectangle import Rectangle
 from models.square import Square
+import os
+from io import StringIO
+from unittest.mock import patch
+
 
 class TestBase(unittest.TestCase):
+    """ Suite to test Base class """
 
     def test_something(self):
         pass
-
-if __name__ == "__main__":
-    unittest.main()
-
-class TestBaseMethods(unittest.TestCase):
-    """ Suite to test Base class """
-
-    def setUp(self):
-        """ Method invoked for each test """
-        Base._Base__nb_objects = 0
 
     def test_id(self):
         """ Test assigned id """

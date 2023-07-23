@@ -10,11 +10,11 @@ class Rectangle(Base):
 
     def __init__(self, width, height, x=0, y=0, id=None):
         """ Initializes instances """
+        super().__init__(id)
         self.width = width
         self.height = height
         self.x = x
         self.y = y
-        super().__init__(id)
 
     @property
     def width(self):
@@ -78,10 +78,8 @@ class Rectangle(Base):
 
     def display(self):
         """ displays a rectangle """
-        rectangle = self.y * "\n"
-        for i in range(self.height):
-            rectangle += (" " * self.x)
-            rectangle += ("#" * self.width) + "\n"
+        rectangle = '\n' * self.y
+        rectangle += (' ' * self.x + '#' * self.width + '\n') * self.height
 
         print(rectangle, end='')
 
@@ -96,16 +94,16 @@ class Rectangle(Base):
 
     def update(self, *args, **kwargs):
         """update method"""
-        if args is not None and len(args) != 0:
+        if args and len(args) != 0:
             list_atr = ['id', 'width', 'height', 'x', 'y']
             for i in range(len(args)):
                 setattr(self, list_atr[i], args[i])
-        else:
+            else:
             for key, value in kwargs.items():
                 setattr(self, key, value)
 
     def to_dictionary(self):
-        """ method that returs a dictionary with properties """
+        """ method that returns a dictionary with properties """
         list_atr = ['id', 'width', 'height', 'x', 'y']
         dict_res = {}
 
